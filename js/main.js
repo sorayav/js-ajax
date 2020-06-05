@@ -9,7 +9,7 @@ const suggestions = document.querySelector('.suggestions');
 
 fetch(endpoint)
   .then(response => response.json())
-  .then(data => {cities = data})
+  .then(data => { cities = data })
 
   function filterPlaces(wordMatching, cities) {
     return cities.filter(place => {
@@ -19,7 +19,16 @@ fetch(endpoint)
   }
 
 function displayPlaces() {
-  console.log(this.value);
+  const matchPlace = filterPlaces(this.value, cities);
+  const html = matchPlace.map(place => {
+    return `
+    <li>
+      <span class="name">${place.city}, ${place.state}</span>
+      <span class="population">${place.population}</span>
+    </li>
+    `
+  }).join('');
+  suggestions.innerHTML = html;
 }
 
-searchInput.addEventListener('change', displayPlaces);
+searchInput.addEventListener('keyup', displayPlaces);
